@@ -4,20 +4,22 @@
 
 {% with logged_in = session['logged_in'] %}
 {% if logged_in %}<form action="/moderate" method="POST">{% endif %}
-{% for name, date, entry in entries %}
-<p>{{ entry }}</p>
-<p>&mdash;<em>{{ name }}</em> on {{ date }}</p>
+{% for post in posts %}
+<p>{{ post.entry }}</p>
+<p>&mdash;<em>{{ post.name }}</em> on {{ post.date }}</p>
 {% if logged_in -%}
   <p>
     {% with name = "remove_%d" % loop.index0 -%}
-    <input type="checkbox" id="{{ name }}" name="{{ name }}" value="yes">
-    <label for="{{ name }}">Remove this entry</label>
+    <input type="checkbox" id="{{ post.id }}" name="{{ post.id }}" value="yes">
+    <label for="{{ post.id }}">Remove this entry</label>
     {%- endwith %}
   </p>
 {%- endif %}
 <hr>
 {% endfor %}
-{% if logged_in %}</form>{% endif %}
+{% if logged_in %}
+<input type="submit" value="Remove posts">
+</form>{% endif %}
 {% endwith %}
 
 <form action="/submit" method="POST">
